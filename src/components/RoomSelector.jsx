@@ -6,7 +6,9 @@ const RoomSelector = () => {
 
   return (
     <div>
-        {rooms.maps()}
+        {rooms.map((item,index)=> {
+            <button key={index}>{item}</button>
+        })}
     </div>
   )
 }
