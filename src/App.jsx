@@ -17,9 +17,13 @@ function App() {
     <>
       <div class='main-content'>
         <h1>Design Your Space</h1>
+      
         <div>
           <div>
             <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
+          </div>
+          <div>
+            <h2 className='instructions'>Select, drag and resize the item you want to decorate with.</h2>
           </div>
           <div>
             <FurniturePalette selectedRoom={selectedRoom} />

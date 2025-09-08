@@ -11,6 +11,8 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
   const canvasRef = useRef();
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
+  const [draggingIndex, setDraggingIndex] = useState(null);
+  const [isOverTrash, setIsOverTrash] = useState(false);
 
   const handleDrop = (e) => {
     // prevent the page from reloading
@@ -35,15 +37,55 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     e.preventDefault();
   }
 
-  const handleDrag = (e, index) => {
-    const canvasRect = canvasRef.current.getBoundingClientRect();
-    const newX = e.clientX - canvasRect.left;
-    const newY = e.clientY - canvasRect.top;
-    setDroppedItems((prevItems) =>
-      prevItems.map((item, i) =>
-        i === index ? { ...item, x: newX, y: newY } : item
-      )
-    );
+  // Trashcan bounding box helper
+  const getTrashRect = () => {
+    const trash = document.getElementById('canvas-trashcan');
+    if (trash) return trash.getBoundingClientRect();
+    return null;
+  };
+
+  // Drag-to-move logic with trashcan detection
+  const handleImageMouseDown = (e, index) => {
+    if (e.button !== 0) return; // Only left click
+    setSelectedIndex(index);
+    setDraggingIndex(index);
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origX = droppedItems[index].x;
+    const origY = droppedItems[index].y;
+    const moveHandler = (moveEvent) => {
+      const canvasRect = canvasRef.current.getBoundingClientRect();
+      const newX = origX + (moveEvent.clientX - startX);
+      const newY = origY + (moveEvent.clientY - startY);
+      setDroppedItems((prevItems) =>
+        prevItems.map((it, i) =>
+          i === index ? { ...it, x: Math.max(0, Math.min(newX, canvasRect.width - (it.width || 60))), y: Math.max(0, Math.min(newY, canvasRect.height - (it.height || 60))) } : it
+        )
+      );
+      // Trashcan hover detection
+      const trashRect = getTrashRect();
+      if (trashRect && moveEvent.clientX >= trashRect.left && moveEvent.clientX <= trashRect.right && moveEvent.clientY >= trashRect.top && moveEvent.clientY <= trashRect.bottom) {
+        setIsOverTrash(true);
+      } else {
+        setIsOverTrash(false);
+      }
+    };
+    const upHandler = (upEvent) => {
+      // If released over trash, delete
+      const trashRect = getTrashRect();
+      if (trashRect && upEvent.clientX >= trashRect.left && upEvent.clientX <= trashRect.right && upEvent.clientY >= trashRect.top && upEvent.clientY <= trashRect.bottom) {
+        setDroppedItems((prev) => prev.filter((_, i) => i !== index));
+        setSelectedIndex(null);
+      }
+      setDraggingIndex(null);
+      setIsOverTrash(false);
+      window.removeEventListener('mousemove', moveHandler);
+      window.removeEventListener('mouseup', upHandler);
+      document.body.style.cursor = 'default';
+    };
+    window.addEventListener('mousemove', moveHandler);
+    window.addEventListener('mouseup', upHandler);
+    document.body.style.cursor = 'move';
   };
 
   // Resize logic
@@ -105,32 +147,7 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
           <img
             src={item.img}
             alt={item.name}
-            onMouseDown={(e) => {
-              if (e.button !== 0) return; // Only left click
-              setSelectedIndex(index);
-              const startX = e.clientX;
-              const startY = e.clientY;
-              const origX = item.x;
-              const origY = item.y;
-              const moveHandler = (moveEvent) => {
-                const canvasRect = canvasRef.current.getBoundingClientRect();
-                const newX = origX + (moveEvent.clientX - startX);
-                const newY = origY + (moveEvent.clientY - startY);
-                setDroppedItems((prevItems) =>
-                  prevItems.map((it, i) =>
-                    i === index ? { ...it, x: Math.max(0, Math.min(newX, canvasRect.width - (it.width || 60))), y: Math.max(0, Math.min(newY, canvasRect.height - (it.height || 60))) } : it
-                  )
-                );
-              };
-              const upHandler = () => {
-                window.removeEventListener('mousemove', moveHandler);
-                window.removeEventListener('mouseup', upHandler);
-                document.body.style.cursor = 'default';
-              };
-              window.addEventListener('mousemove', moveHandler);
-              window.addEventListener('mouseup', upHandler);
-              document.body.style.cursor = 'move';
-            }}
+            onMouseDown={(e) => handleImageMouseDown(e, index)}
             onClick={() => setSelectedIndex(index)}
             style={{
               position: 'absolute',
@@ -147,24 +164,53 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
             draggable={false}
           />
           {selectedIndex === index && (
-            <div
-              onMouseDown={(e) => handleResizeStart(e, index)}
-              style={{
-                position: 'absolute',
-                left: (item.x + (item.width || 60)) - 8,
-                top: (item.y + (item.height || 60)) - 8,
-                width: 16,
-                height: 16,
-                background: '#fff',
-                border: '2px solid #007bff',
-                borderRadius: 4,
-                cursor: 'nwse-resize',
-                zIndex: 3,
-              }}
-            />
+            <>
+              {/* Resize handle */}
+              <div
+                onMouseDown={(e) => handleResizeStart(e, index)}
+                style={{
+                  position: 'absolute',
+                  left: (item.x + (item.width || 60)) - 8,
+                  top: (item.y + (item.height || 60)) - 8,
+                  width: 16,
+                  height: 16,
+                  background: '#fff',
+                  border: '2px solid #007bff',
+                  borderRadius: 4,
+                  cursor: 'nwse-resize',
+                  zIndex: 3,
+                }}
+              />
+            </>
           )}
         </React.Fragment>
       ))}
+      {/* Trashcan icon */}
+      <div
+        id="canvas-trashcan"
+        style={{
+          position: 'absolute',
+          right: 24,
+          bottom: 24,
+          width: 48,
+          height: 48,
+          background: isOverTrash ? '#ff4d4f' : '#fff',
+          border: '2px solid #888',
+          borderRadius: 12,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: isOverTrash ? '0 0 12px #ff4d4f' : '0 1px 4px rgba(0,0,0,0.10)',
+          zIndex: 10,
+          transition: 'background 0.2s, box-shadow 0.2s',
+          fontSize: 32,
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}
+        title="Drag here to delete"
+      >
+        🗑️
+      </div>
     </div>
   );
 }
