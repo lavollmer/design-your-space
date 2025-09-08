@@ -1,17 +1,17 @@
 export const furnitureByRoom = {
     "Living Room": [
-        { id: 'sofa', name: 'sofa', img: 'sofa.png' },
-        { id: 'lamp', name: 'lamp', img: 'lamp.png' },
-        { id: 'table', name: 'table', img: 'table.png' },
+        { id: 'sofa', name: 'sofa', img: '/assets/sofa.png' },
+        { id: 'lamp', name: 'lamp', img: '/assets/lamp.png' },
+        { id: 'table', name: 'table', img: '/assets/table.png' },
     ],
     "Bedroom": [
-        { id: 'bed', name: 'bed', img: 'bed.png' },
-        { id: 'dresser', name: 'dresser', img: 'dresser.png' },
-        { id: 'nightstand', name: 'nightstand', img: 'nightstand.png' },
+        { id: 'bed', name: 'bed', img: '/assets/bed.png' },
+        { id: 'dresser', name: 'dresser', img: '/assets/dresser.png' },
+        { id: 'nightstand', name: 'nightstand', img: '/assets/nightstand.png' },
     ],
     "Office": [
-        { id: 'desk', name: 'desk', img: 'desk.png' },
-        { id: 'mirror', name: 'mirror', img: 'mirror.png' },
-        { id: 'plant', name: 'plant', img: 'plant.png' },
+        { id: 'desk', name: 'desk', img: '/assets/desk.png' },
+        { id: 'mirror', name: 'mirror', img: '/assets/mirror.png' },
+        { id: 'office_plant', name: 'office_plant', img: '/assets/office_plant.png' },
     ],
 }
