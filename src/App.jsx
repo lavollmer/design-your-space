@@ -1,13 +1,13 @@
 import './App.css'
-import RoomSelector from './components/RoomSelector'
+import RoomButton from "./components/RoomSelector"
 
 function App() {
 
   return (
     <>
-      <h1>hello</h1>
       <div>
-        <RoomSelector/>
+        <h1>hello</h1>
+        <RoomButton/>
       </div>
     </>
   )

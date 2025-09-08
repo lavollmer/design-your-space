@@ -1,16 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-const RoomSelector = () => {
+const RoomSelector = ({ selectedRoom, onSelectRoom }) => {
     // rooms array
-    const rooms = ["Living Room", "Bedroom", "Office"]
+    const room = ["Living Room", "Bedroom", "Office"]
 
-  return (
-    <div>
-        {rooms.map((item,index)=> {
-            <button key={index}>{item}</button>
-        })}
-    </div>
-  )
+    return (
+        <>
+            <div>
+                {room.map((room) => {
+                    <button key={room} onClick={()=>onSelectRoom(room)} className={selectedRoom === room ? 'active': ''}>{room}</button>
+                })}
+            </div>
+        </>
+    )
 }
 
 export default RoomSelector
