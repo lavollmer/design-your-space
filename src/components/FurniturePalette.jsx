@@ -1,11 +1,13 @@
 import React from 'react'
 // useDrag hook 
 import { useDrag } from 'react-dnd';
-import ItemTypes from "../data/FurnitureItem"
+import {furnitureByRoom} from "../data/FurnitureItem"
 
 const FurniturePalette = () => {
+    const furnitureItems = selectedRoom ? furnitureByRoom[selectedRoom] : [];
+
     const [{ isDragging }, drag] = useDrag(() => ({
-        type: ItemTypes.FurnitureItem,
+        type: ItemTypes.furnitureByRoom,
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })
