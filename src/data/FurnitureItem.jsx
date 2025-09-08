@@ -1,3 +1,4 @@
+// Constants module that exports draggable item types
 export const furnitureByRoom = {
     "Living Room": [
         { id: 'sofa', name: 'sofa', img: '/assets/sofa.png' },
