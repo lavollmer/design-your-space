@@ -1,26 +1,28 @@
 import React from 'react'
 // useDrag hook 
 import { useDrag } from 'react-dnd';
-import {furnitureByRoom} from "../data/FurnitureItem"
+import { furnitureByRoom } from "../data/FurnitureItem"
 
 const FurniturePalette = () => {
     const furnitureItems = selectedRoom ? furnitureByRoom[selectedRoom] : [];
 
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: ItemTypes.furnitureByRoom,
-        collect: (monitor) => ({
-            isDragging: !!monitor.isDragging()
-        })
-    }))
-
     return (
-        <div ref={drag} style={{
-            opacity: isDragging ? 0.5 : 1,
-            fontSize: 25,
-            fontWeight: 'bold',
-            cursor: 'move',
-        }}>
-            <h1>hello</h1>
+        <div>
+            <h3>{selectedRoom || 'Choose a room'}</h3>
+            <div>
+                {furnitureItems.map((item) => (
+                    <div
+                    key={item.id}
+                    draggable
+                    onDragStart={(e) => {
+                        e.dataTransfer.setData('application/furniture', JSON.stringify(item));
+                    }}
+                    >
+                        <img src={item.img} alt={item.name} width="60"/>
+                        <p>{item.name}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
