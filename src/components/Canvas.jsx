@@ -194,10 +194,10 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
         id="canvas-trashcan"
         style={{
           position: 'absolute',
-          right: 24,
-          bottom: 24,
-          width: 48,
-          height: 48,
+          right: 8,
+          bottom: 8,
+          width: 144,
+          height: 170,
           zIndex: 10,
           cursor: 'pointer',
           userSelect: 'none',
@@ -211,9 +211,9 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
           src="/assets/trashcan.png"
           alt="Trashcan"
           style={{
-            width: 48,
-            height: 48,
-            filter: isOverTrash ? 'drop-shadow(0 0 12px #ff4d4f) brightness(1.2)' : 'none',
+            width: 144,
+            height: 200,
+            filter: isOverTrash ? 'drop-shadow(0 0 32px #ff4d4f) brightness(1.2)' : 'none',
             transition: 'filter 0.2s',
             pointerEvents: 'none',
             userSelect: 'none',

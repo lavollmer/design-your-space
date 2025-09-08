@@ -23,7 +23,7 @@ function App() {
             <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
           </div>
           <div>
-            <h2 className='instructions'>Select, drag and resize the item you want to decorate with.</h2>
+            <h2 className='instructions'>Select, drag and resize the item you want to decorate with. If you want to remove the item, drag it to the trashcan in the room.</h2>
           </div>
           <div>
             <FurniturePalette selectedRoom={selectedRoom} />
