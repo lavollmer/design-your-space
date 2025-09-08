@@ -7,7 +7,7 @@ export const furnitureByRoom = {
     ],
     "Bedroom": [
         { id: 'bed', name: 'bed', img: '/assets/bed.png' },
-        { id: 'dresser', name: 'dresser', img: '/assets/dresser.png' },
+        { id: 'plant', name: 'plant', img: '/assets/plant.png' },
         { id: 'nightstand', name: 'nightstand', img: '/assets/nightstand.png' },
     ],
     "Office": [

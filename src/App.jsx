@@ -20,7 +20,7 @@ function App() {
         </div>
         <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
         <FurniturePalette selectedRoom={selectedRoom} />
-        <Canvas droppedItems={droppedItems} />
+  <Canvas droppedItems={droppedItems} setDroppedItems={setDroppedItems} />
       </div>
     </>
   )
