@@ -91,6 +91,10 @@ h3 {
 }
 
 .canvas {
+  background-image:('/assets/background.png');
+  background-size: cover;
+  background-position:center;
+  background-repeat: no-repeat;
   position: relative;
   width: 800px;
   height: 500px;
