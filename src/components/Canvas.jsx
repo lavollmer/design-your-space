@@ -8,43 +8,13 @@
 import React, { useRef, useState } from 'react'
 
 const Canvas = ({ droppedItems, setDroppedItems }) => {
-  const canvasRef = useRef();
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isResizing, setIsResizing] = useState(false);
-  const [draggingIndex, setDraggingIndex] = useState(null);
-  const [isOverTrash, setIsOverTrash] = useState(false);
-
-  const handleDrop = (e) => {
-    // prevent the page from reloading
-    e.preventDefault();
-
-    // getting canvas's position relative to viewport
-    const canvasRect = canvasRef.current.getBoundingClientRect();
-    const itemData = JSON.parse(e.dataTransfer.getData('application/furniture'));
-
-    const newItem = {
-      ...itemData,
-      x: e.clientX - canvasRect.left,
-      y: e.clientY - canvasRect.top,
-      width: 60,
-      height: 60,
-      uuid: Date.now(),
-    };
-    setDroppedItems((prev) => [...prev, newItem]);
-  }
-
-  const allowDrop = (e) => {
-    e.preventDefault();
-  }
-
-  // Trashcan bounding box helper
+  // Drag-to-move logic
   const getTrashRect = () => {
     const trash = document.getElementById('canvas-trashcan');
     if (trash) return trash.getBoundingClientRect();
     return null;
   };
 
-  // Drag-to-move logic with trashcan detection
   const handleImageMouseDown = (e, index) => {
     if (e.button !== 0) return; // Only left click
     setSelectedIndex(index);
@@ -87,6 +57,26 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     window.addEventListener('mouseup', upHandler);
     document.body.style.cursor = 'move';
   };
+  const canvasRef = useRef();
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [draggingIndex, setDraggingIndex] = useState(null);
+  const [isOverTrash, setIsOverTrash] = useState(false);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+    const itemData = JSON.parse(e.dataTransfer.getData('application/furniture'));
+    const newItem = {
+      ...itemData,
+      x: e.clientX - canvasRect.left,
+      y: e.clientY - canvasRect.top,
+      width: 60,
+      height: 60,
+      uuid: Date.now(),
+    };
+    setDroppedItems((prev) => [...prev, newItem]);
+  };
 
   // Resize logic
   const handleResizeStart = (e, index) => {
@@ -94,6 +84,38 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     setIsResizing(true);
     setSelectedIndex(index);
     document.body.style.cursor = 'nwse-resize';
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origWidth = droppedItems[index].width || 60;
+    const origHeight = droppedItems[index].height || 60;
+
+    const moveHandler = (moveEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const deltaY = moveEvent.clientY - startY;
+      setDroppedItems((prevItems) =>
+        prevItems.map((item, i) => {
+          if (i === index) {
+            return {
+              ...item,
+              width: Math.max(20, origWidth + deltaX),
+              height: Math.max(20, origHeight + deltaY),
+            };
+          }
+          return item;
+        })
+      );
+    };
+
+    const upHandler = () => {
+      setIsResizing(false);
+      document.body.style.cursor = 'default';
+      window.removeEventListener('mousemove', moveHandler);
+      window.removeEventListener('mouseup', upHandler);
+    };
+
+    window.addEventListener('mousemove', moveHandler);
+    window.addEventListener('mouseup', upHandler);
   };
 
   const handleResize = (e) => {
@@ -116,29 +138,14 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     }
   };
 
-  const handleResizeEnd = () => {
-    setIsResizing(false);
-    document.body.style.cursor = 'default';
-  };
+  // ...existing code...
 
-  React.useEffect(() => {
-    if (isResizing) {
-      window.addEventListener('mousemove', handleResize);
-      window.addEventListener('mouseup', handleResizeEnd);
-    } else {
-      window.removeEventListener('mousemove', handleResize);
-      window.removeEventListener('mouseup', handleResizeEnd);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleResize);
-      window.removeEventListener('mouseup', handleResizeEnd);
-    };
-  }, [isResizing, selectedIndex]);
+  // Render
   return (
     <div
       ref={canvasRef}
       onDrop={handleDrop}
-      onDragOver={allowDrop}
+      onDragOver={e => e.preventDefault()}
       className='canvas'
       style={{ position: 'relative' }}
     >
@@ -147,7 +154,7 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
           <img
             src={item.img}
             alt={item.name}
-            onMouseDown={(e) => handleImageMouseDown(e, index)}
+            onMouseDown={e => handleImageMouseDown(e, index)}
             onClick={() => setSelectedIndex(index)}
             style={{
               position: 'absolute',
@@ -164,24 +171,21 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
             draggable={false}
           />
           {selectedIndex === index && (
-            <>
-              {/* Resize handle */}
-              <div
-                onMouseDown={(e) => handleResizeStart(e, index)}
-                style={{
-                  position: 'absolute',
-                  left: (item.x + (item.width || 60)) - 8,
-                  top: (item.y + (item.height || 60)) - 8,
-                  width: 16,
-                  height: 16,
-                  background: '#fff',
-                  border: '2px solid #007bff',
-                  borderRadius: 4,
-                  cursor: 'nwse-resize',
-                  zIndex: 3,
-                }}
-              />
-            </>
+            <div
+              onMouseDown={e => handleResizeStart(e, index)}
+              style={{
+                position: 'absolute',
+                left: (item.x + (item.width || 60)) - 8,
+                top: (item.y + (item.height || 60)) - 8,
+                width: 16,
+                height: 16,
+                background: '#fff',
+                border: '2px solid #007bff',
+                borderRadius: 4,
+                cursor: 'nwse-resize',
+                zIndex: 3,
+              }}
+            />
           )}
         </React.Fragment>
       ))}
@@ -194,22 +198,27 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
           bottom: 24,
           width: 48,
           height: 48,
-          background: isOverTrash ? '#ff4d4f' : '#fff',
-          border: '2px solid #888',
-          borderRadius: 12,
+          zIndex: 10,
+          cursor: 'pointer',
+          userSelect: 'none',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: isOverTrash ? '0 0 12px #ff4d4f' : '0 1px 4px rgba(0,0,0,0.10)',
-          zIndex: 10,
-          transition: 'background 0.2s, box-shadow 0.2s',
-          fontSize: 32,
-          cursor: 'pointer',
-          userSelect: 'none',
         }}
         title="Drag here to delete"
       >
-        🗑️
+        <img
+          src="/assets/trashcan.png"
+          alt="Trashcan"
+          style={{
+            width: 48,
+            height: 48,
+            filter: isOverTrash ? 'drop-shadow(0 0 12px #ff4d4f) brightness(1.2)' : 'none',
+            transition: 'filter 0.2s',
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+        />
       </div>
     </div>
   );
