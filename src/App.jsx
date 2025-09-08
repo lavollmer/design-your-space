@@ -10,6 +10,9 @@ function App() {
   // setting useState to null for selectedroom
   const [selectedRoom, setSelectedRoom] = useState(null);
 
+  // define dropped items
+  const [droppedItems, setDroppedItems] = useState([]);
+
   return (
     <>
       <DndProvider backend={HTML5Backend}>
