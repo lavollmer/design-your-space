@@ -9,14 +9,14 @@ const RoomSelector = ({ selectedRoom, onSelectRoom }) => {
     return (
         <>
             <div>
-                {rooms.map((room) => {
+                {rooms.map((room) => (
                     <button
                         key={room}
                         onClick={() => onSelectRoom(room)}
                         className={selectedRoom === room ? 'active' : ''}>
                         {room}
                     </button>
-                })}
+                ))}
             </div>
         </>
     )

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css'
-import RoomButton from "./components/RoomSelector"
+import RoomSelector from "./components/RoomSelector"
 import FurniturePalette from './components/FurniturePalette';
 import Canvas from './components/Canvas'
 import { furnitureByRoom } from './data/FurnitureItem'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 function App() {
   // setting useState to null for selectedroom
@@ -16,13 +14,14 @@ function App() {
 
   return (
     <>
-      <DndProvider backend={HTML5Backend}>
+      <div>
         <div>
-          <RoomButton selectedRoom={selectedRoom} onSelectedRoom={setSelectedRoom} />
-          <FurniturePalette selectedRoom={selectedRoom} />
-          <Canvas droppedItems={droppedItems} />
+          <h1>Design Your Space</h1>
         </div>
-      </DndProvider>
+        <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
+        <FurniturePalette selectedRoom={selectedRoom} />
+        <Canvas droppedItems={droppedItems} />
+      </div>
     </>
   )
 }

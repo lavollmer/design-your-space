@@ -1,6 +1,3 @@
-import React from 'react'
-// useDrag hook 
-import { useDrag } from 'react-dnd';
 import { furnitureByRoom } from "../data/FurnitureItem"
 
 const FurniturePalette = ({selectedRoom}) => {
