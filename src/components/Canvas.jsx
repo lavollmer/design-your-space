@@ -32,20 +32,41 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     e.preventDefault();
   }
 
-  const handleDrag = (e,index) => {
+  const handleDrag = (e, index) => {
     const canvasRect = canvasRef.current.getBoundingClient();
     const newX = e.clientX - canvasRect.left;
     const newY = e.clientY - canvasRect.top;
 
-  setDroppedItems ((prevItems) =>
-    prevItems.map((item, i) =>
-      i === index ? {...item, x:newX, y: newY} : item
+    setDroppedItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, x: newX, y: newY } : item
+      )
     )
-  )
   };
 
   return (
-    <div>Canvas</div>
+    <div
+      ref={canvasRef}
+      onDrop={handleDrop}
+      onDragOver={allowDrop}
+    >
+      {droppedItems.map((item, index) => (
+        <img
+          key={item.uuid}
+          src={item.img}
+          alt={item.name}
+          draggable
+          onDragEnd={(e) => handleDrag(e, index)}
+          style={{
+            position: 'absolute',
+            left: item.x,
+            top: item.y,
+            width: '60px',
+            cursor: 'move',
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
