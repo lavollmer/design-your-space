@@ -4,13 +4,13 @@ const FurniturePalette = ({selectedRoom}) => {
     const furnitureItems = selectedRoom ? furnitureByRoom[selectedRoom] : [];
 
     return (
-        <div class='furniture-palette'>
-            <h3 class='room-name'>{selectedRoom || 'Choose a room'}</h3>
+        <div className='furniture-palette'>
+            <h3 className='room-name'>{selectedRoom || 'Choose a room'}</h3>
             <div>
                 {furnitureItems.map((item) => (
                     <div
                         key={item.id}
-                        class='draggable-item'
+                        className='draggable-item'
                         draggable
                         onDragStart={(e) => {
                             e.dataTransfer.setData('application/furniture', JSON.stringify(item));

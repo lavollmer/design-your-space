@@ -49,7 +49,7 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
       ref={canvasRef}
       onDrop={handleDrop}
       onDragOver={allowDrop}
-      class='canvas'
+      className='canvas'
     >
       {droppedItems.map((item, index) => (
         <img

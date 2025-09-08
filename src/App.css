@@ -92,10 +92,11 @@ h3 {
 
 .canvas {
   position: relative;
-  flex: 1;
+  width: 800px;
+  height: 500px;
   background-color: #fdfdfd;
   border: 2px dashed #ccc;
-  margin: 1rem;
+  margin: 1rem auto;
   border-radius: 8px;
   overflow: hidden;
 }

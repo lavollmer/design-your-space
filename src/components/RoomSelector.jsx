@@ -8,7 +8,7 @@ const RoomSelector = ({ selectedRoom, onSelectRoom }) => {
 
     return (
         <>
-            <div class='room-selector'>
+            <div className='room-selector'>
                 {rooms.map((room) => (
                     <button
                         key={room}
