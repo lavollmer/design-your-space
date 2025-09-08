@@ -1,18 +1,18 @@
 // Constants module that exports draggable item types
 export const furnitureByRoom = {
     "Living Room": [
-        { id: 'sofa', name: 'sofa', img: '/assets/sofa.png' },
-        { id: 'lamp', name: 'lamp', img: '/assets/lamp.png' },
-        { id: 'table', name: 'table', img: '/assets/table.png' },
+        { id: 'sofa', name: 'Sofa', img: '/assets/sofa.png' },
+        { id: 'lamp', name: 'Lamp', img: '/assets/lamp.png' },
+        { id: 'table', name: 'Table', img: '/assets/table.png' },
     ],
     "Bedroom": [
-        { id: 'bed', name: 'bed', img: '/assets/bed.png' },
-        { id: 'plant', name: 'plant', img: '/assets/plant.png' },
-        { id: 'nightstand', name: 'nightstand', img: '/assets/nightstand.png' },
+        { id: 'bed', name: 'Bed', img: '/assets/bed.png' },
+        { id: 'plant', name: 'Plant', img: '/assets/plant.png' },
+        { id: 'nightstand', name: 'Nightstand', img: '/assets/nightstand.png' },
     ],
     "Office": [
-        { id: 'desk', name: 'desk', img: '/assets/desk.png' },
-        { id: 'mirror', name: 'mirror', img: '/assets/mirror.png' },
-        { id: 'office_plant', name: 'office_plant', img: '/assets/office_plant.png' },
+        { id: 'desk', name: 'Desk & Chair', img: '/assets/desk.png' },
+        { id: 'mirror', name: 'Mirror Art', img: '/assets/mirror.png' },
+        { id: 'office_plant', name: 'Plant', img: '/assets/office_plant.png' },
     ],
 }

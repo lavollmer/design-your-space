@@ -3,6 +3,7 @@ import './App.css'
 import RoomSelector from "./components/RoomSelector"
 import FurniturePalette from './components/FurniturePalette';
 import Canvas from './components/Canvas'
+import Footer from './components/Footer'
 import { furnitureByRoom } from './data/FurnitureItem'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <FurniturePalette selectedRoom={selectedRoom} />
           <Canvas droppedItems={droppedItems} setDroppedItems={setDroppedItems} />
         </div>
+        <Footer />
       </div>
     </>
   )
