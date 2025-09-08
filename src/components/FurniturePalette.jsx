@@ -4,7 +4,7 @@ const FurniturePalette = ({selectedRoom}) => {
     const furnitureItems = selectedRoom ? furnitureByRoom[selectedRoom] : [];
 
     return (
-        <div>
+        <div class='furniture-palette'>
             <h3>{selectedRoom || 'Choose a room'}</h3>
             <div>
                 {furnitureItems.map((item) => (

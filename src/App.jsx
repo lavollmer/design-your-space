@@ -14,13 +14,15 @@ function App() {
 
   return (
     <>
-      <div>
+      <div class='main-content'>
         <div>
           <h1>Design Your Space</h1>
         </div>
-        <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
-        <FurniturePalette selectedRoom={selectedRoom} />
-        <Canvas droppedItems={droppedItems} setDroppedItems={setDroppedItems} />
+        <div>
+          <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
+          <FurniturePalette selectedRoom={selectedRoom} />
+          <Canvas droppedItems={droppedItems} setDroppedItems={setDroppedItems} />
+        </div>
       </div>
     </>
   )
