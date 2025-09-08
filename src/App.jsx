@@ -8,14 +8,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 function App() {
   // setting useState to null for selectedroom
-  const [selectRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   return (
     <>
       <DndProvider backend={HTML5Backend}>
         <div>
-          <RoomButton selectRoom={selectRoom} onSelectRoom={setSelectedRoom} />
-          <FurniturePalette selectRoom={selectRoom} />
+          <RoomButton selectedRoom={selectedRoom} onSelectedRoom={setSelectedRoom} />
+          <FurniturePalette selectedRoom={selectedRoom} />
         </div>
       </DndProvider>
     </>
