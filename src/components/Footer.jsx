@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <div className='footer'>
-      <p>Created by <span>Laura Dev</span> · 2025 &nbsp;|&nbsp;
+      <p>Created by <span>Laura Dev</span> · <span>All images used from Canva</span> · 2025 &nbsp;|&nbsp; 
         <a
           href="https://github.com/lavollmer"
           target="_blank"
