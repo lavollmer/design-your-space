@@ -137,10 +137,6 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
       );
     }
   };
-
-  // ...existing code...
-
-  // Render
   return (
     <div
       ref={canvasRef}

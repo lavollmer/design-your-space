@@ -11,3 +11,4 @@ https://designyourspace.netlify.app/
 - Canva Images from Sparklestroke Global
 - React DnD (https://react-dnd.github.io/react-dnd/about)
 - useRef (https://react.dev/reference/react/useRef)
+- icons8 (https://icons8.com/)
