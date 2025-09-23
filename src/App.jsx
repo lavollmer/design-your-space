@@ -25,7 +25,7 @@ function App() {
           <div>
             <h2 className='instructions'>Select, drag and resize the item you want to decorate with. If you want to remove the item, drag it to the trashcan in the room.</h2>
           </div>
-          <div>
+          <div className='room'>
             <FurniturePalette selectedRoom={selectedRoom} />
           </div>
           <div>
