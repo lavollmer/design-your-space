@@ -142,25 +142,6 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     window.addEventListener('mouseup', upHandler);
   };
 
-  // const handleResize = (e) => {
-  //   if (isResizing && selectedIndex !== null) {
-  //     const canvasRect = canvasRef.current.getBoundingClientRect();
-  //     const mouseX = e.clientX - canvasRect.left;
-  //     const mouseY = e.clientY - canvasRect.top;
-  //     setDroppedItems((prevItems) =>
-  //       prevItems.map((item, i) => {
-  //         if (i === selectedIndex) {
-  //           return {
-  //             ...item,
-  //             width: Math.max(20, mouseX - item.x),
-  //             height: Math.max(20, mouseY - item.y),
-  //           };
-  //         }
-  //         return item;
-  //       })
-  //     );
-  //   }
-  // };
   return (
     <div
       ref={canvasRef}
