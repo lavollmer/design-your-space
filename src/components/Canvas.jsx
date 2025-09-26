@@ -18,18 +18,26 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     return null;
   };
 
+  // dragging behavior for an image on a canvas
   const handleImageMouseDown = (e, index) => {
-    if (e.button !== 0) return; // Only left click
+    // left button click
+    if (e.button !== 0) return;
+    // update React state
     setSelectedIndex(index);
     setDraggingIndex(index);
+    // original mouse cursor places
     const startX = e.clientX;
     const startY = e.clientY;
     const origX = droppedItems[index].x;
     const origY = droppedItems[index].y;
+    // mousemove while dragging
     const moveHandler = (moveEvent) => {
+      // canvasRef related to canvas DOM
       const canvasRect = canvasRef.current.getBoundingClientRect();
+      // how far mouse has moved from starting point
       const newX = origX + (moveEvent.clientX - startX);
       const newY = origY + (moveEvent.clientY - startY);
+      // updates dropped item position
       setDroppedItems((prevItems) =>
         prevItems.map((it, i) =>
           i === index ? { ...it, x: Math.max(0, Math.min(newX, canvasRect.width - (it.width || 60))), y: Math.max(0, Math.min(newY, canvasRect.height - (it.height || 60))) } : it
@@ -43,33 +51,45 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
         setIsOverTrash(false);
       }
     };
+
+    // mouse up handler - called when user releases mouse button
+    // upEvent is mouse event for that action
     const upHandler = (upEvent) => {
       // If released over trash, delete
       const trashRect = getTrashRect();
+      // 
       if (trashRect && upEvent.clientX >= trashRect.left && upEvent.clientX <= trashRect.right && upEvent.clientY >= trashRect.top && upEvent.clientY <= trashRect.bottom) {
         setDroppedItems((prev) => prev.filter((_, i) => i !== index));
         setSelectedIndex(null);
       }
+      // clears dragging state and hover state over trashcan
       setDraggingIndex(null);
       setIsOverTrash(false);
+      // remove event listeners
       window.removeEventListener('mousemove', moveHandler);
       window.removeEventListener('mouseup', upHandler);
+      // reset cursor
       document.body.style.cursor = 'default';
     };
     window.addEventListener('mousemove', moveHandler);
     window.addEventListener('mouseup', upHandler);
     document.body.style.cursor = 'move';
   };
+
+// manage state and references
   const canvasRef = useRef();
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [draggingIndex, setDraggingIndex] = useState(null);
   const [isOverTrash, setIsOverTrash] = useState(false);
 
+  // handleDrop which is drag and drop interface
   const handleDrop = (e) => {
     e.preventDefault();
     const canvasRect = canvasRef.current.getBoundingClientRect();
+    // determine the type of data being dragged
     const itemData = JSON.parse(e.dataTransfer.getData('application/furniture'));
+    // new object for dropped item
     const newItem = {
       ...itemData,
       x: e.clientX - canvasRect.left,
@@ -78,6 +98,7 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
       height: 60,
       uuid: Date.now(),
     };
+    // updates dropped item state
     setDroppedItems((prev) => [...prev, newItem]);
   };
 
@@ -121,25 +142,25 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
     window.addEventListener('mouseup', upHandler);
   };
 
-  const handleResize = (e) => {
-    if (isResizing && selectedIndex !== null) {
-      const canvasRect = canvasRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - canvasRect.left;
-      const mouseY = e.clientY - canvasRect.top;
-      setDroppedItems((prevItems) =>
-        prevItems.map((item, i) => {
-          if (i === selectedIndex) {
-            return {
-              ...item,
-              width: Math.max(20, mouseX - item.x),
-              height: Math.max(20, mouseY - item.y),
-            };
-          }
-          return item;
-        })
-      );
-    }
-  };
+  // const handleResize = (e) => {
+  //   if (isResizing && selectedIndex !== null) {
+  //     const canvasRect = canvasRef.current.getBoundingClientRect();
+  //     const mouseX = e.clientX - canvasRect.left;
+  //     const mouseY = e.clientY - canvasRect.top;
+  //     setDroppedItems((prevItems) =>
+  //       prevItems.map((item, i) => {
+  //         if (i === selectedIndex) {
+  //           return {
+  //             ...item,
+  //             width: Math.max(20, mouseX - item.x),
+  //             height: Math.max(20, mouseY - item.y),
+  //           };
+  //         }
+  //         return item;
+  //       })
+  //     );
+  //   }
+  // };
   return (
     <div
       ref={canvasRef}
