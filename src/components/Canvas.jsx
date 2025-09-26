@@ -8,9 +8,12 @@
 import React, { useRef, useState } from 'react'
 
 const Canvas = ({ droppedItems, setDroppedItems }) => {
-  // Drag-to-move logic
+  // try to retrieve the position and size of the HTML element on the page
   const getTrashRect = () => {
+    // find an element in the DOM with id
     const trash = document.getElementById('canvas-trashcan');
+    // if the element was found then return result
+    // getBounding Client is a DOM method that returns the size and position element relative to the viewport
     if (trash) return trash.getBoundingClientRect();
     return null;
   };

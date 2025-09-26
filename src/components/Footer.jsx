@@ -1,7 +1,6 @@
-import React from 'react'
-
 const Footer = () => {
   return (
+    // Footer with Github profile link, images copyright and Laura Dev
     <div className='footer'>
       <p>Created by <span>Laura Dev</span> · <span>All images used from Canva</span> · 2025 &nbsp;|&nbsp; 
         <a

@@ -4,7 +4,6 @@ import RoomSelector from "./components/RoomSelector"
 import FurniturePalette from './components/FurniturePalette';
 import Canvas from './components/Canvas'
 import Footer from './components/Footer'
-import { furnitureByRoom } from './data/FurnitureItem'
 
 function App() {
   // setting useState to null for selectedroom
@@ -13,11 +12,11 @@ function App() {
   // define dropped items
   const [droppedItems, setDroppedItems] = useState([]);
 
+  // program architecture is main title, room selector button, instructions, furniture palette, canvas, footer
   return (
     <>
       <div class='main-content'>
         <h1>Design Your Space</h1>
-      
         <div>
           <div>
             <RoomSelector selectedRoom={selectedRoom} onSelectRoom={setSelectedRoom} />
