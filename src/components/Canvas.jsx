@@ -144,12 +144,14 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
 
   return (
     <div
+    // connects canvas to useRef so it can measure size and position
       ref={canvasRef}
       onDrop={handleDrop}
       onDragOver={e => e.preventDefault()}
       className='canvas'
       style={{ position: 'relative' }}
     >
+      {/* itierates over droppedItems and uses a unique key */}
       {droppedItems.map((item, index) => (
         <React.Fragment key={item.uuid}>
           <img
@@ -171,6 +173,7 @@ const Canvas = ({ droppedItems, setDroppedItems }) => {
             }}
             draggable={false}
           />
+          {/* only renders if item is currently selected */}
           {selectedIndex === index && (
             <div
               onMouseDown={e => handleResizeStart(e, index)}
